@@ -66,20 +66,15 @@ class CommentSection extends Component {
 	        </Comment.Group>
 	    );  		
   	} 
-  	else if (this.state.DATA_FETCH_STATUS === "FETCHED") {
-	    return (
-	        <Comment.Group>
-	        	<Header as='h3' dividing>Comments</Header>
-	        	<CommentShownArea comments={this.state.comments}/>
-	          <CommentEnterArea addComment={this.addComment}/>
-	        </Comment.Group>
-	    );  		
-  	}
   	else {
 	    return (
 	        <Comment.Group>
 	        	<Header as='h3' dividing>Comments</Header>
-	        	<CommentShownArea comments = {[]} />
+            {
+              this.state.DATA_FETCH_STATUS === "FETCHED" ? 
+                <CommentShownArea comments = {this.state.comments} /> :
+                <CommentShownArea comments={[]}/>
+            }	        	
 	          <CommentEnterArea addComment={this.addComment}/>
 	        </Comment.Group>
 	    );    		
