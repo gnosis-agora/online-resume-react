@@ -64,7 +64,7 @@ class CommentSection extends Component {
             {
               this.state.DATA_FETCH_STATUS === "FETCHED" ? 
                 <CommentsContainer comments = {this.state.comments} rootId={null} addComment={this.addComment}/> :
-                <CommentsContainer comments={[]}/>
+                <CommentsContainer comments={[]} rootId={null} addComment={this.addComment}/>
             }	        	
 	          <CommentEnterArea addComment={this.addComment}/>
 	        </Comment.Group>

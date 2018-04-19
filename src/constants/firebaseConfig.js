@@ -1,12 +1,12 @@
 import firebase from 'firebase';
 
-const config = {
-  apiKey: "AIzaSyA2j_GTqhtVKbXRVxU4b-o-ZDsVGwaR1CM",
-  authDomain: "online-resume-4f9ce.firebaseapp.com",
-  databaseURL: "https://online-resume-4f9ce.firebaseio.com",
-  projectId: "online-resume-4f9ce",
-  storageBucket: "online-resume-4f9ce.appspot.com",
-  messagingSenderId: "570421257083"
+var config = {
+  apiKey: "AIzaSyCrnWOGZfxfSu73pFfcdSenj3ouhhGYPcs",
+  authDomain: "online-resume-274f0.firebaseapp.com",
+  databaseURL: "https://online-resume-274f0.firebaseio.com",
+  projectId: "online-resume-274f0",
+  storageBucket: "",
+  messagingSenderId: "392566899839"
 };
 firebase.initializeApp(config);
 

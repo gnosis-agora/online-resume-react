@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "online-resume-4f9ce"
+    "default": "online-resume-4f9ce",
+    "resume": "online-resume-274f0"
   }
 }
