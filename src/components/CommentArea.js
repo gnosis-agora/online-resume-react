@@ -18,8 +18,12 @@ class CommentArea extends Component {
 	}
 
 	handleSubmit = () => {
-		this.props.addComment(this.state.name, this.state.comment);
+		this.props.addComment(this.state.name, this.state.comment, this.props.parentId);
 		this.setState({name: '', comment: ''})
+		if (this.props.toggleCommentBox) {
+			this.props.toggleCommentBox();
+		}
+		
 	}
 
 	render() {

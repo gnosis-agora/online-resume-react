@@ -1,21 +1,11 @@
 import React, { Component } from 'react';
 import { Comment, Header, Loader } from 'semantic-ui-react';
-import firebase from 'firebase';
+import moment from 'moment';
+import { db } from '../constants/firebaseConfig';
 
 
 import CommentEnterArea from '../components/CommentArea';
-import CommentShownArea from '../components/CommentShownArea';
-
-const config = {
-  apiKey: "AIzaSyA2j_GTqhtVKbXRVxU4b-o-ZDsVGwaR1CM",
-  authDomain: "online-resume-4f9ce.firebaseapp.com",
-  databaseURL: "https://online-resume-4f9ce.firebaseio.com",
-  projectId: "online-resume-4f9ce",
-  storageBucket: "online-resume-4f9ce.appspot.com",
-  messagingSenderId: "570421257083"
-};
-firebase.initializeApp(config);
-var db = firebase.database();
+import CommentsContainer from './CommentsContainer';
 
 class CommentSection extends Component {
 
@@ -32,32 +22,33 @@ class CommentSection extends Component {
     this.setState({DATA_FETCH_STATUS: "FETCHING"});
     db.ref("/Comments").once("value").then(data => {
       if (data.val()) {
-      	let comments = data.val();
-				let commentList = [];
-				for (let comment in comments) {
-					commentList.push(comments[comment]);
-				}
+        
+        let commentList = [];
+        for (let key in data.val()) {
+          commentList.push(data.val()[key])
+        }
         this.setState({DATA_FETCH_STATUS: "FETCHED", comments: commentList});
       }
       else {
       	this.setState({DATA_FETCH_STATUS: "FAILED"})
-      	console.log(this.state.DATA_FETCH_STATUS)
       }
     })
   }
 
   // Takes in a name and message and adds a new record to firebase
-  addComment = (name, message) => {
+  addComment = (name, message, parentId=null) => {
     let key = db.ref("/Comments").push().key;
-    let data = {id: key, name: name, message: message, createdAt: firebase.database.ServerValue.TIMESTAMP};
-    db.ref("/Comments").push(data);
+
+
+    let data = {id: key, name: name, message: message, createdAt: moment.now(), parentId: parentId};
+    db.ref("/Comments/"+key).update(data);
     let commentHolder = this.state.comments;
     commentHolder.push(data);
     this.setState({comments: commentHolder});
   }
 
   render() {
-  	if (this.state.DATA_FETCH_STATUS === "FETCHING") {
+  	if (this.state.DATA_FETCH_STATUS === "FETCHING" || this.state.DATA_FETCH_STATUS === "IDLE") {
 	    return (
 	        <Comment.Group>
 	        	<Header as='h3' dividing>Comments</Header>
@@ -72,8 +63,8 @@ class CommentSection extends Component {
 	        	<Header as='h3' dividing>Comments</Header>
             {
               this.state.DATA_FETCH_STATUS === "FETCHED" ? 
-                <CommentShownArea comments = {this.state.comments} /> :
-                <CommentShownArea comments={[]}/>
+                <CommentsContainer comments = {this.state.comments} rootId={null} addComment={this.addComment}/> :
+                <CommentsContainer comments={[]}/>
             }	        	
 	          <CommentEnterArea addComment={this.addComment}/>
 	        </Comment.Group>
